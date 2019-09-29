@@ -73,8 +73,10 @@
       </div>
     </div>
     <input v-show="user.role.toLowerCase() == 'client' && req.status.toLowerCase() != 'выполнено'" @click="cancelRequest" class="btn-2" type="button" value="Отменить заявку">
-    <input v-show="user.role.toLowerCase() == 'worker' && req.status.toLowerCase() != 'выполнено'" @click="changeStatus" class="btn-2" type="button" value="Поменять статус">
-    
+    <input v-show="(user.role.toLowerCase() == 'worker' || user.role.toLowerCase() == 'operator') && req.status.toLowerCase() != 'выполнено'" @click="changeStatus" class="btn-2" type="button" value="Поменять статус">
+    <textarea v-model="req.feedback.review" v-show="user.role.toLowerCase() == 'client' && req.status.toLowerCase() == 'выполнено'" placeholder="оставить коментарий"></textarea>
+    <star-rating v-model="req.feedback.rating" v-show="user.role.toLowerCase() == 'client' && req.status.toLowerCase() == 'выполнено'"></star-rating>
+    <input @click="commentOut" type="button" value="Сохранить" class="btn-2">
   </div>
 </template>
 
@@ -120,6 +122,9 @@ export default {
     },
     changeStatus() {
       this.$store.dispatch('CHANGE_STATUS', {id: this.req.id, status: this.req.status.toLowerCase()})
+    },
+    commentOut() {
+      this.$store.dispatch('COMMENT_OUT', {id: this.req.id, rating: this.req.feedback.rating , review: this.req.feedback.review})      
     }
   }
 }
@@ -139,6 +144,24 @@ export default {
     padding: 5px;
     border: 1px solid rgba(41, 45, 57, 0.2);
     border-width: 1px 0;
+  }
+  
+  textarea {
+    resize: none;
+    height: 15%;
+    width: 100%;
+    padding: 10px;
+    background: #FAFAFA;
+    margin: 20px 0;
+    box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.1), inset -2px -2px 10px rgba(0, 0, 0, 0.1);
+    
+    @media (min-width: 600px) {
+      width: 50%;
+      border: 3px solid #292D39;
+      box-sizing: border-box;
+      box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
   }
 
   .statuses {

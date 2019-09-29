@@ -198,6 +198,27 @@ export default new Vuex.Store({
             reject(err)
           })
       })
+    },
+    COMMENT_OUT: (context, payload) => {
+      return new Promise((resolve, reject) => {
+          
+        axios({
+          method: 'POST',
+          url: `https://hackaton-dp-final.herokuapp.com/request/comment/${payload.id}`,
+          data: payload,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+            'Authorization': context.state.authToken
+          }
+        })
+          .then(data => {
+            resolve()
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
     }
   }
 })

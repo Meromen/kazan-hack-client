@@ -5,7 +5,7 @@
       <input v-model="number" type="text" placeholder="Номер телефона" class="input">
       <input v-model="password" type="password" placeholder="Пароль" class="input">
     </div>
-    <input @click="login" type="button" value="Войти" class="btn">
+    <input @click="login" :disabled="disabled" type="button" value="Войти" class="btn">
     <span>или</span>
     <router-link to="/registration" class="link">Зарегистрироваться</router-link>
   </div>
@@ -16,14 +16,26 @@ export default {
   data () {
     return {
       number: '',
-      password: ''
+      password: '',
+      disabled: false
     }
   },
   methods: {
     login () {
+      this.disabled = true
       this.$store.dispatch('LOGIN', { phone: this.number, password: this.password })
         .then(() => {
           this.$router.push('/')
+          this.disabled = false          
+        })
+        .catch(err => {
+          this.$notify({
+            group: 'foo', 
+            title: 'ошибка',
+            position: ['bottom', 'right'],
+            text: err,
+          });
+          this.disabled = false
         })
     }
   }
@@ -40,7 +52,7 @@ export default {
   position: relative;
   padding: 2rem 0;
   background: inherit;
-
+  
   .logo {
     height: 128px;
     width: 128px;
