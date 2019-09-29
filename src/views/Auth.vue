@@ -1,6 +1,6 @@
 <template>
   <div class="auth">
-    <div class="logo"></div>
+    <div class="logo"><img src="../assets/logo.jpg" alt=""></div>
     <div class="input-form">
       <input v-model="number" type="text" placeholder="Номер телефона" class="input">
       <input v-model="password" type="password" placeholder="Пароль" class="input">
@@ -42,9 +42,8 @@ export default {
   background: inherit;
 
   .logo {
-    height: 100px;
-    width: 100px;
-    background: red;
+    height: 128px;
+    width: 128px;
   }
 
   span {

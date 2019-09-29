@@ -2,6 +2,7 @@
   <div id="app">
     <navbar v-show="$route.name != 'auth' && $route.name != 'registration'"></navbar>
     <router-view/>
+    <notifications group="foo" />
   </div>
 </template>
 

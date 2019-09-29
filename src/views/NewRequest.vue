@@ -59,6 +59,14 @@ export default {
     background: #FAFAFA;
     margin: 20px 0;
     box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.1), inset -2px -2px 10px rgba(0, 0, 0, 0.1);
+    
+    @media (min-width: 600px) {
+      width: 50%;
+      border: 3px solid #292D39;
+      box-sizing: border-box;
+      box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
   }
 }
 </style>

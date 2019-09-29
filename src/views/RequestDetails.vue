@@ -17,7 +17,7 @@
             <path d="M8.77592 0C8.93757 0 9.06861 0.130163 9.06861 0.290727V2.76191C9.06861 2.92247 8.93757 3.05264 8.77592 3.05264C8.61426 3.05264 8.48324 2.92247 8.48324 2.76191V0.290727C8.48324 0.130163 8.61426 0 8.77592 0ZM3.21495 0C3.3766 0 3.50763 0.130163 3.50763 0.290727V2.76191C3.50763 2.92247 3.3766 3.05264 3.21495 3.05264C3.05328 3.05264 2.92226 2.92247 2.92226 2.76191V0.290727C2.92226 0.130163 3.05328 0 3.21495 0ZM10.8247 0.872182C11.4753 0.872182 12 1.39338 12 2.03963V4.65164H0V2.03963C0 1.39338 0.524722 0.872182 1.17531 0.872182H2.04878H2.62958V2.11232C2.45008 2.27201 2.3369 2.5037 2.3369 2.76191C2.3369 3.2436 2.73 3.63409 3.21495 3.63409C3.69988 3.63409 4.09299 3.2436 4.09299 2.76191C4.09299 2.5037 3.9798 2.27201 3.80031 2.11232V0.872182H8.19512V2.10777C8.01282 2.26759 7.89787 2.5014 7.89787 2.76191C7.89787 3.2436 8.29098 3.63409 8.77592 3.63409C9.26085 3.63409 9.65397 3.2436 9.65397 2.76191C9.65397 2.50601 9.54257 2.27641 9.36585 2.11686V0.872182H10.8247ZM12 5.23309V11.0431C12 11.6893 11.4753 12.2105 10.8247 12.2105H1.17531C0.524722 12.2105 0 11.6893 0 11.0431V5.23309H12Z" fill="black"/>
           </svg>
         </span>
-        Дата: {{ req.date }}
+        Дата: {{ ` ${reqTime.getDate()}.${reqTime.getMonth() + 1}.${reqTime.getFullYear()}` }}
       </p>
       <p>
         <span>
@@ -34,6 +34,15 @@
           </svg>
         </span>
         Время прибытия мастера: В ближайшее время.
+      </p>
+      <p>
+        <span>
+          <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="7.06848" cy="3" r="3" fill="#292D39"/>
+            <path d="M13.0685 12H1.0685C1.0685 12 0.914372 11.0651 1.0685 10.5C1.18338 10.0788 1.31997 9.85899 1.5685 9.5C2.12423 8.69729 2.38478 8.4678 3.06848 8C4.08769 7.30264 4.53454 7.19147 5.56848 7C6.52847 6.82222 7.60851 6.82222 8.5685 7C9.60244 7.19147 10.21 7.39287 11.0685 8C12.0893 8.72189 12.8065 9.27747 13.0685 10.5C13.1912 11.0728 13.0685 12 13.0685 12Z" fill="#292D39" stroke="#292D39"/>
+          </svg>
+        </span>
+        Мастер: {{ req.worker.name }}
       </p>
       <p>
         <span>
@@ -63,7 +72,9 @@
         <span>Выполнено</span>
       </div>
     </div>
-    <input @click="cancelRequest" class="btn-2" type="button" value="Отменить заявку">
+    <input v-show="user.role.toLowerCase() == 'client' && req.status.toLowerCase() != 'выполнено'" @click="cancelRequest" class="btn-2" type="button" value="Отменить заявку">
+    <input v-show="user.role.toLowerCase() == 'worker' && req.status.toLowerCase() != 'выполнено'" @click="changeStatus" class="btn-2" type="button" value="Поменять статус">
+    
   </div>
 </template>
 
@@ -92,6 +103,9 @@ export default {
     },
     requests () {
       return this.$store.state.requests
+    },
+    reqTime () {
+      return new Date(this.req.date)
     }
   },
   methods: {
@@ -103,6 +117,9 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    },
+    changeStatus() {
+      this.$store.dispatch('CHANGE_STATUS', {id: this.req.id, status: this.req.status.toLowerCase()})
     }
   }
 }
@@ -142,6 +159,12 @@ export default {
       width: 8px;
       height: 8px;
       border-radius: 100px;
+      transition: 0.3s;
+      
+      @media (min-width: 600px) {
+        width: 30px;
+        height: 30px;
+      }
     }
 
     span {
@@ -149,8 +172,15 @@ export default {
       font-weight: 300;
       font-size: 10px;
       line-height: 11px;
-
+      transition: 0.3s;
+      
       color: #9D9D9D;
+      
+      @media (min-width: 600px) {
+        font-weight: 300;
+        font-size: 18px;
+        line-height: 21px;
+      }
     }
   }
 
@@ -159,6 +189,11 @@ export default {
       width: 16px;
       height: 16px;
       border-radius: 100px;
+      
+      @media (min-width: 600px) {
+        width: 60px;
+        height: 60px;
+      }
     }
 
     span {
@@ -167,6 +202,11 @@ export default {
       font-size: 11px;
       line-height: 13px;
       color: #000000;
+      
+      @media (min-width: 600px) {
+        font-size: 24px;
+        line-height: 28px;
+      }
     }
   }
 }

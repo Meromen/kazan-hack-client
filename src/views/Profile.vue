@@ -5,6 +5,7 @@
     <input v-model="name" type="text" class="input" placeholder="ФИО">
     <input v-model="address" type="text" class="input" placeholder="Адрес">
     <input @click="updateInfo" type="button" value="Сохранить" class="btn-2">
+    <notifications group="profile" />    
   </div>
 </template>
 
@@ -35,7 +36,13 @@ export default {
     updateInfo () {
       this.$store.dispatch('UPDATE_USER', { name: this.name, address: this.address })
         .then(() => {
-          console.log('data updated')
+          this.$notify({
+            group: 'profile',
+            title: 'Успех',
+            position: ['bottom', 'right'],
+            text: 'Данные успешно обновлены',
+          });
+
         })
     }
   }

@@ -18,10 +18,10 @@ export default {
 
 <style lang="scss" scoped>
 .back-bar {
-  height: 4%;
-  width: 100%;
+  width: 95%;
   display: flex;
-  padding: 1rem;
+  padding: 1rem 3rem;
+  padding-left: 50px;
   justify-content: flex-start;
   align-content: center;
 }

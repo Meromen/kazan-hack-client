@@ -16,6 +16,15 @@ export default {
     moreInfo () {
       this.$router.push(`/request/${this.request.id}`)
     }
+  },
+  data() {
+    return {
+      reqDate: undefined
+    }
+  },
+  mounted() {
+    this.reqDate = new Date(this.request.date)
+    console.log(this.reqDate)
   }
 }
 </script>
@@ -37,6 +46,14 @@ export default {
   background: $white;
   transition: 0.3s;
   margin: 5px 0;
+
+  .additional-field {
+    display: none;
+    
+    @media (min-width: 600px) {
+      display: block;
+    }
+  }
 
   &:hover {
     color: $white;

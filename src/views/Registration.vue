@@ -1,6 +1,6 @@
 <template>
   <div class="registration">
-    <div class="logo"></div>
+    <div class="logo"><img src="../assets/logo.jpg" alt=""></div>
     <div class="input-form">
       <input v-model="number" type="text" placeholder="Номер телефона" class="input">
       <input v-model="address" type="text" placeholder="Адрес" class="input">
@@ -52,9 +52,8 @@ export default {
   position: relative;
 
   .logo {
-    height: 100px;
-    width: 100px;
-    background: red;
+    height: 128px;
+    width: 128px;
   }
 }
 </style>

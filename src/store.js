@@ -29,8 +29,12 @@ export default new Vuex.Store({
     },
     DELETE_REQUEST: (state, payload) => {
       for (let i = 0; i < state.requests.length; i++) {
-        console.log(state.requests[i].id, payload)
         if (state.requests[i].id === payload) { state.requests.splice(i, 1) }
+      }
+    },
+    CHANGE_STATUS: (state, payload) => {
+      for (let i = 0; i < state.requests.length; i++) {
+        if (state.requests[i].id === payload.id) { state.requests[i].status = payload.status }
       }
     }
   },
@@ -157,6 +161,37 @@ export default new Vuex.Store({
         })
           .then(data => {
             context.commit('ADD_REQUEST', data.data)
+            resolve()
+          })
+          .catch(err => {
+            reject(err)
+          })
+      })
+    },
+    CHANGE_STATUS: (context, payload) => {
+      return new Promise((resolve, reject) => {
+        
+        if (payload.status == 'выполняется')
+          payload.status = 'выполнено'
+        if (payload.status == 'ожидается')
+          payload.status = 'выполняется'
+        if (payload.status == 'рассматривается')
+          payload.status = 'ожидается'
+          
+        axios({
+          method: 'POST',
+          url: `https://hackaton-dp-final.herokuapp.com/request/update/status/${payload.id}`,
+          data: {
+            status: payload.status
+          },
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+            'Authorization': context.state.authToken
+          }
+        })
+          .then(data => {
+            context.commit('CHANGE_STATUS', payload)
             resolve()
           })
           .catch(err => {
